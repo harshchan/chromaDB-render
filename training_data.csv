@@ -1,0 +1,1022 @@
+id,training_data_type,question,content
+402271-sql,sql,How many orders are delayed due to material unavailability?,"SELECT Product_Form AS PRODUCT_FORM, COUNT(DISTINCT PART_ID) AS ORDER_COUNT, ROUND(SUM(DISTINCT Order_Qty), 0) AS ORDER_QTY FROM [GEN_AI_NEW].[dbo].[late_order_reasons] WHERE REASON_CATEGORY = 'RM Material Shortage' AND Product_Form = 'S_PPGLCF' GROUP BY Product_Form;"
+1840458-doc,documentation,,"The following columns are in the udt_allocation_detail_report table in the GEN_AI_NEW database:
+
+|     | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME                   | COLUMN_NAME             | DATA_TYPE   |
+|----:|:----------------|:---------------|:-----------------------------|:------------------------|:------------|
+|  96 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | DEMAND_GROUP            | varchar     |
+|  97 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | PLANNING_ITEM           | varchar     |
+|  98 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | DEMAND_LOCATION         | varchar     |
+|  99 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | FORECAST_DATE           | date        |
+| 100 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | INV_AT_PLANT            | float       |
+| 101 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | INV_AT_NONPLANT         | float       |
+| 102 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | ALLOCATION_DEMAND_GROUP | varchar     |
+| 103 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | ALLOCATION_ITEM         | varchar     |
+| 104 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | PLANT                   | varchar     |
+| 105 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | AVAIL_DATE              | date        |
+| 106 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | ALLOCATION_QUANTITY     | float       |
+| 107 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | SUPPLY                  | float       |
+| 108 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | INV_QUANTITY_PLANT      | float       |
+| 109 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | INV_QUANTITY_NONPLANT   | float       |
+| 110 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | CONSTRAINT_FORECAST     | float       |
+| 111 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | PRODUCTION_ALLOCATIONS  | float       |
+| 112 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | CONSUMED_QUANTITY       | float       |
+| 113 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | FREE_ALLOCATIONS        | float       |
+| 114 | GEN_AI_NEW      | dbo            | udt_allocation_detail_report | Order                   | float       |"
+401636-sql,sql,"Which sales orders have experienced OTIF (On-Time, In-Full) failures and are impacted the most?","SELECT [SALES_ORDER_NUMBER] AS ""SALES ORDER NUMBER"", [LINE_ITEM_NUMBER] AS ""LINE ITEM NUMBER"", [REGION] AS ""REGION"", [SEGMENT] AS ""SEGMENT"", [PRODUCT_FORM] AS ""PRODUCT FORM"", AVG([PROMISED_TARGET_QUANTITY]) AS ""PROMISED TARGET QUANTITY"", AVG([ACTUAL_INVOICE_QUANTITY]) AS ""ACTUAL INVOICE QUANTITY"" FROM SALES_ORDER_STATUS GROUP BY [SALES_ORDER_NUMBER], [LINE_ITEM_NUMBER], [REGION], [SEGMENT], [PRODUCT_FORM];"
+394109-sql,sql,Can you provide the exact bottleneck resources and its utilization for producing these products?,"select DISTINCT udc_product_group As Product_Group, loc As Location,res As Resource, CONCAT(ROUND( percentage_utilized,0),'%') As Utilised_Percentage from plant_percentage where percentage_utilized >99"
+394099-sql,sql,What is my finalized unconstrained forecast for all months to be fed into the Master Planning process?,"select CONVERT ( varchar,MONTH, 32) AS Month , ROUND(SUM(TOTAL_ORDER),0) AS Unconstraint_Forecast  from udt_order_fulfillment where simulation_name ='MONTHLY_MAX_DEMSAT' GROUP BY MONTH;"
+401634-sql,sql,"What is the current status of production, payment, and delivery for all promised orders?","SELECT [SALES_ORDER_NUMBER] AS ""SALES ORDER NUMBER"", [LINE_ITEM_NUMBER] AS ""LINE ITEM NUMBER"", [SOLD_TO_PARTY] AS ""SOLD TO PARTY"", [DEMAND_GROUP] AS ""DEMAND GROUP"", [PRODUCT_FORM] AS ""PRODUCT FORM"", ITEM AS ""ITEM"", PLANT AS ""PLANT"", [PLANT_NAME] AS ""PLANT NAME"", MAX([PRODUCTION_TARGET_DATE]) AS ""PRODUCTION TARGET DATE"", MAX([ACTUAL_PRODUCTION_DATE]) AS ""ACTUAL PRODUCTION DATE"", AVG([TOTAL_PRODUCTION_QUANTITY]) AS ""TOTAL PRODUCTION QUANTITY"", AVG([PROMISED_TARGET_QUANTITY]) AS ""PROMISED TARGET QUANTITY"", MAX([DO_TARGET_DATE]) AS ""DO TARGET DATE"", MAX([ACTUAL_DO_CREATION_DATE]) AS ""ACTUAL DO CREATION DATE"", MAX([DELIVERY_TARGET_DATE]) AS ""DELIVERY TARGET DATE"", MAX([ACTUAL_DELIVERY_DATE]) AS ""ACTUAL DELIVERY DATE"", AVG([PROMISED_TARGET_QUANTITY]) AS ""PROMISED TARGET QUANTITY"", AVG([ACTUAL_INVOICE_QUANTITY]) AS ""ACTUAL INVOICE QUANTITY"" FROM SALES_ORDER_STATUS GROUP BY [SALES_ORDER_NUMBER], [LINE_ITEM_NUMBER], [SOLD_TO_PARTY], [DEMAND_GROUP], [PRODUCT_FORM], ITEM, PLANT, [PLANT_NAME];"
+289542-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.Inv_Stock_Clear (
+    DC varchar,
+    Avg_Sales float,
+    Sold_To_Party varchar,
+    Party_Code varchar,
+    Ship_To_Party varchar,
+    Customer varchar,
+    Strategy varchar,
+    Material varchar,
+    Sales_Office varchar,
+    FORM varchar,
+    JSW_Grade varchar,
+    GRADE_GRP varchar,
+    THICK float,
+    WIDTH float,
+    UQ float,
+    IQ float,
+    BQ float,
+    SQ float,
+    Usage_Decision varchar,
+    NCO_Declared varchar,
+    Aging float,
+    LENGTH float,
+    Order_Status varchar,
+    S_ALUMINIUM_PCT float,
+    S_BORON_PCT float,
+    S_CARBON_PCT float,
+    S_CHROMIUM_PCT float,
+    S_COPPER_PCT float,
+    S_MANGANESE_PCT float,
+    S_MOLYBDENUM_PCT float,
+    S_NICKEL_PCT float,
+    S_NIOBIUM_PCT float,
+    S_PHOSPHORUS_PCT float,
+    S_SILICON_PCT float,
+    S_SULPHUR_PCT float,
+    S_TITANIUM_PCT float,
+    S_VANADIUM_PCT float
+);
+
+
+
+"
+400100-sql,sql,Which products and customers should we focus on to achieve better forecast accuracy?,"select Product,Customer as Region,CONVERT ( varchar,startdate, 32) as Month, round (actuals,0) as Sales,round (forecast,0) as Forecast, accuracy As Forecast_Accuracy,Total_Percent_of_Sales_Contribution from Statistical_Data where startdate='01-05-2024' and Customer not in ('Domestic','Exports') order by 4 desc;"
+400096-sql,sql,Should I update my forecast numbers in S&OE to account for orders on hand?,"select distinct Product,Customer, CONVERT ( varchar,MONTH, 32) AS Month, round(Sales,0) as Sales, round(PH_Forecast,0) as PH_Forecast, round (SNOE_Forecast_Addition,0) as SNOE_Forecast_Addition, round(Remaining_Per_Week_Qty,0) as Remaining_Per_Week_Qty from SNOP_Value_Add_RCA where month='01-07-2024'order by 4 desc;"
+394103-sql,sql,"What is the demand fulfillment by product group, market segment, customer segment, and priority for each month?","SELECT CONVERT(varchar, MONTH, 32) AS Month, PRODUCT_GRP AS Product_Group, MARKET_SEGMENT, CUSTOMER_SEGMENT, PRIORITY, ROUND(SUM(TOTAL_ORDER), 0) AS Total_Orders, ROUND(SUM(TOTAL_ALLOCATION), 0) AS Total_Met_Orders, CONCAT(ROUND((SUM(TOTAL_ALLOCATION) / SUM(TOTAL_ORDER)) * 100, 0), '%') AS Fill_Rate FROM udt_order_fulfillment WHERE simulation_name = 'MONTHLY_MAX_DEMSAT' GROUP BY MONTH, PRODUCT_GRP, MARKET_SEGMENT, CUSTOMER_SEGMENT, PRIORITY;"
+1840453-doc,documentation,,"The following columns are in the UDT_ORDER_FULFILLMENT table in the GEN_AI_NEW database:
+
+|    | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME            | COLUMN_NAME              | DATA_TYPE   |
+|---:|:----------------|:---------------|:----------------------|:-------------------------|:------------|
+| 10 | GEN_AI_NEW      | dbo            | UDT_ORDER_FULFILLMENT | SIMULATION_NAME          | varchar     |
+| 11 | GEN_AI_NEW      | dbo            | UDT_ORDER_FULFILLMENT | MONTH                    | date        |
+| 12 | GEN_AI_NEW      | dbo            | UDT_ORDER_FULFILLMENT | PRODUCT_GRP              | varchar     |
+| 13 | GEN_AI_NEW      | dbo            | UDT_ORDER_FULFILLMENT | Market_segment           | varchar     |
+| 14 | GEN_AI_NEW      | dbo            | UDT_ORDER_FULFILLMENT | Customer_segment         | varchar     |
+| 15 | GEN_AI_NEW      | dbo            | UDT_ORDER_FULFILLMENT | PRIORITY                 | float       |
+| 16 | GEN_AI_NEW      | dbo            | UDT_ORDER_FULFILLMENT | TOTAL_CUST_ORDER         | float       |
+| 17 | GEN_AI_NEW      | dbo            | UDT_ORDER_FULFILLMENT | TOT_CUSTORDER_ALLOCATION | float       |
+| 18 | GEN_AI_NEW      | dbo            | UDT_ORDER_FULFILLMENT | TOT_FORCAST_ORDER        | float       |
+| 19 | GEN_AI_NEW      | dbo            | UDT_ORDER_FULFILLMENT | TOT_FCSTORDER_ALLOCATION | float       |
+| 20 | GEN_AI_NEW      | dbo            | UDT_ORDER_FULFILLMENT | TOTAL_ORDER              | float       |
+| 21 | GEN_AI_NEW      | dbo            | UDT_ORDER_FULFILLMENT | TOTAL_ALLOCATION         | float       |"
+407072-sql,sql,Can you show me the previous and updated resource utilization for KCCL2?,"select loc as Plant, res as Resource, ROUND(pct_used,2) as [Previous_Resource_Utilisation %], updated_pct_used as [Updated_Resource_Utilisation %] from resource_utilization where res='KCCL2';"
+400094-sql,sql,What if I select the best forecast value added by all stakeholders?,"select distinct Product,Customer as Region, Cust_Segment as Customer_Type, CONVERT ( varchar,MONTH, 32) AS Month, round(Avg_3_month_sales,0) as Avg_3_Month_Sales,CAM_Value_Add,BM_Value_Add,RM_Value_Add,SH_Value_Add,PH_Value_Add, Highest_Forecast_accuracy as Highest_Value_Add_By from SNOP_Value_Add_RCA where month ='01-06-2024' and cust_segment <>'NA' and Customer in ('WEST', 'NORTH') and Product='15' order by 2 desc;"
+287384-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.Sales_Data (
+    customer varchar,
+    product float,
+    loc varchar,
+    MD date,
+    Qty float,
+    AC_PROD float,
+    REF_PROD float,
+    CEMENT_PROD float,
+    COMPRESSOR_PROD float,
+    CONS_MACH_PROD float,
+    CRANES_PROD float,
+    OIL_PROD float,
+    CV_PROD float,
+    MINING_PROD float,
+    PAINT_PROD float,
+    VARNISH_PROD float,
+    PUMP_PROD float,
+    PV_PROD float,
+    STEEL_PROD float,
+    TRACTOR_PROD float,
+    TRANS_PROD float,
+    Key varchar,
+    Rank float
+);
+
+
+"
+1840464-doc,documentation,,"The following columns are in the Model_Results table in the GEN_AI_NEW database:
+
+|     | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME    | COLUMN_NAME   | DATA_TYPE   |
+|----:|:----------------|:---------------|:--------------|:--------------|:------------|
+| 286 | GEN_AI_NEW      | dbo            | Model_Results | TEST_Period   | date        |
+| 287 | GEN_AI_NEW      | dbo            | Model_Results | Actuals       | float       |
+| 288 | GEN_AI_NEW      | dbo            | Model_Results | Key           | varchar     |
+| 289 | GEN_AI_NEW      | dbo            | Model_Results | Pred          | float       |
+| 290 | GEN_AI_NEW      | dbo            | Model_Results | Error         | float       |
+| 291 | GEN_AI_NEW      | dbo            | Model_Results | Error1        | float       |
+| 292 | GEN_AI_NEW      | dbo            | Model_Results | Accuracy      | float       |
+| 293 | GEN_AI_NEW      | dbo            | Model_Results | Features      | varchar     |
+| 294 | GEN_AI_NEW      | dbo            | Model_Results | Rsquare       | float       |
+| 295 | GEN_AI_NEW      | dbo            | Model_Results | Adj_Rsquare   | float       |
+| 296 | GEN_AI_NEW      | dbo            | Model_Results | Model         | varchar     |"
+400093-sql,sql,Which product groups and customer segments should we focus on for low forecast value add?,"select distinct Product,Customer as Region, Cust_Segment, CONVERT ( varchar,MONTH, 32) AS Month, round(Sales,0) as Sales,CAM_Value_Add,BM_Value_Add,RM_Value_Add,SH_Value_Add,PH_Value_Add from SNOP_Value_Add_RCA where month ='01-06-2024' and cust_segment <>'NA' and PH_Value_Add like '%-%' order by 5 desc;"
+1840470-doc,documentation,,"The following columns are in the Inv_Stock_Clear table in the GEN_AI_NEW database:
+
+|     | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME      | COLUMN_NAME      | DATA_TYPE   |
+|----:|:----------------|:---------------|:----------------|:-----------------|:------------|
+| 342 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | DC               | varchar     |
+| 343 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | Avg_Sales        | float       |
+| 344 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | Sold_To_Party    | varchar     |
+| 345 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | Party_Code       | varchar     |
+| 346 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | Ship_To_Party    | varchar     |
+| 347 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | Customer         | varchar     |
+| 348 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | Strategy         | varchar     |
+| 349 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | Material         | varchar     |
+| 350 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | Sales_Office     | varchar     |
+| 351 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | FORM             | varchar     |
+| 352 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | JSW_Grade        | varchar     |
+| 353 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | GRADE_GRP        | varchar     |
+| 354 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | THICK            | float       |
+| 355 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | WIDTH            | float       |
+| 356 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | UQ               | float       |
+| 357 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | IQ               | float       |
+| 358 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | BQ               | float       |
+| 359 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | SQ               | float       |
+| 360 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | Usage_Decision   | varchar     |
+| 361 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | NCO_Declared     | varchar     |
+| 362 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | Aging            | float       |
+| 363 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | LENGTH           | float       |
+| 364 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | Order_Status     | varchar     |
+| 365 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_ALUMINIUM_PCT  | float       |
+| 366 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_BORON_PCT      | float       |
+| 367 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_CARBON_PCT     | float       |
+| 368 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_CHROMIUM_PCT   | float       |
+| 369 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_COPPER_PCT     | float       |
+| 370 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_MANGANESE_PCT  | float       |
+| 371 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_MOLYBDENUM_PCT | float       |
+| 372 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_NICKEL_PCT     | float       |
+| 373 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_NIOBIUM_PCT    | float       |
+| 374 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_PHOSPHORUS_PCT | float       |
+| 375 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_SILICON_PCT    | float       |
+| 376 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_SULPHUR_PCT    | float       |
+| 377 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_TITANIUM_PCT   | float       |
+| 378 | GEN_AI_NEW      | dbo            | Inv_Stock_Clear | S_VANADIUM_PCT   | float       |"
+287340-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.RM_Supply_Report (
+    Ordered_Part varchar,
+    Description varchar,
+    Inventory_Buffer varchar,
+    Vendor varchar,
+    Supply_Type varchar,
+    Supply_Quantity float,
+    Supply varchar,
+    Arrival_Time datetime2,
+    Total_Fed_Quantity float,
+    Unused_Quantity float,
+    No_of_Orders_Fed float,
+    Orders_Fed varchar,
+    Action_Quantity float,
+    Available_Time datetime2,
+    Latest_Needed_Time varchar,
+    Start_of_Bucket varchar,
+    End_of_Bucket varchar,
+    PO_Release_Time varchar,
+    LPST_Message varchar,
+    PST_Message varchar
+);
+
+
+"
+402303-sql,sql,Which products and customers should we focus on for better forecast accuracy?,"SELECT DISTINCT CONCAT('01','-',RIGHT([MD],2),'-',LEFT([MD],4)) AS [Month], A.[Key] AS DFU, REVERSE(PARSENAME(REPLACE(REVERSE(A.[Key]), '/', '.'), 1)) AS [Customer], REVERSE(PARSENAME(REPLACE(REVERSE(A.[Key]), '/', '.'), 2)) AS [Product], ROUND(A.qty,0) AS Sales, ROUND(C.Forecast,0) AS Forecast, ROUND(C.Accuracy_Percentage,0) AS [Forecast Accuracy%] FROM [GEN_AI_NEW].[dbo].[Sales_Data] A INNER JOIN (SELECT * FROM (SELECT [Key],[Test_Period], Accuracy AS Accuracy_Percentage,Pred AS Forecast FROM [GEN_AI_NEW].[dbo].[Model_Results] WHERE Model='All Var MLR') B ) C ON A.[Key] = C.[Key] AND A.MD = C.Test_Period WHERE C.Accuracy_Percentage < 50 AND A.[rank] < 10 ORDER BY ROUND(A.qty,0) DESC, [Forecast Accuracy%] DESC;"
+287338-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.late_order_reasons (
+    Demand_Order varchar,
+    Order_Qty float,
+    Part_ID varchar,
+    Order_Due_Date varchar,
+    Days_Late tinyint,
+    Late_Reason varchar,
+    Mfg_Order varchar,
+    Operation varchar,
+    Late_Part varchar,
+    Total_Quantity float,
+    Quantity_from_Vendors float,
+    Latest_Delivery varchar,
+    Latest_Time_Needed varchar,
+    Mfg_Lateness float,
+    Reason_Category varchar,
+    RES varchar,
+    PRODUCT_FORM varchar,
+    LATE_PART_TYPE varchar,
+    ALTERNATE_PART varchar,
+    CAMPAIGN_TYPE varchar,
+    CAMPAIGN_START_DATE date,
+    CAMPAIGN_END_DATE date
+);
+
+
+"
+402277-sql,sql,Which campaigns are causing order delays?,"SELECT DISTINCT LATE_REASON AS CAMPAIGN_NAME, Campaign_Type AS CAMPAIGN_TYPE, RES, ROUND(SUM(ORDER_QTY), 0) AS ORDER_QTY, CONCAT(ROUND(AVG(DAYS_LATE), 0), ' ', 'Days') AS DAYS_LATE, CONVERT(VARCHAR, CAMPAIGN_START_DATE, 105) AS CAMPAIGN_START_DATE, CONVERT(VARCHAR, CAMPAIGN_END_DATE, 105) AS CAMPAIGN_END_DATE FROM [GEN_AI_NEW].[dbo].[late_order_reasons] WHERE REASON_CATEGORY = 'Campaign Unavailable' GROUP BY LATE_REASON, Campaign_Type, RES, CAMPAIGN_START_DATE, CAMPAIGN_END_DATE ORDER BY ORDER_QTY DESC;"
+407095-sql,sql,"Historically, which customers have I targeted for selling HR Coil Form Inventory with Grade AHSS?","select  dc as [Distribution Channel],sales_office as [Sales Office],form as [Product Form],grade_grp as Grade, Sold_to_party as Customer ,strategy as Strategy,ROUND(SUM(UQ),0) as [Unrestricted Quantity],avg(Avg_sales) as [Average Sales] from inv_stock_clear where form='S_HRCF' AND GRADE_GRP='API & High Strength Diversion' AND NCO_dECLARED='Yes' and dc='OEM'  AND SALES_OFFICE='Mumbai' and strategy <>'Not Found' group by sold_to_party,strategy,dc,sales_office,form,grade_grp order by strategy desc;"
+1840455-doc,documentation,,"The following columns are in the SNOP_Value_Add_RCA table in the GEN_AI_NEW database:
+
+|    | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME         | COLUMN_NAME                          | DATA_TYPE   |
+|---:|:----------------|:---------------|:-------------------|:-------------------------------------|:------------|
+| 41 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | Product                              | varchar     |
+| 42 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | Customer                             | varchar     |
+| 43 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | Month                                | date        |
+| 44 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | Cust_Segment                         | varchar     |
+| 45 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | Stat_Forecast                        | float       |
+| 46 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | CAM_Forecast                         | float       |
+| 47 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | BM_Forecast                          | float       |
+| 48 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | RM_Forecast                          | float       |
+| 49 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | SH_Forecast                          | float       |
+| 50 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | PH_Forecast                          | float       |
+| 51 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | Sales                                | float       |
+| 52 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | SNOE_Forecast_Addition               | float       |
+| 53 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | Remaining_Per_Week_Qty               | float       |
+| 54 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | Avg_3_month_sales                    | float       |
+| 55 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | Stat_Accuracy                        | varchar     |
+| 56 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | CAM_Accuracy                         | varchar     |
+| 57 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | BM_Accuracy                          | varchar     |
+| 58 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | RM_Accuracy                          | varchar     |
+| 59 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | SH_Accuracy                          | varchar     |
+| 60 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | PH_Accuracy                          | varchar     |
+| 61 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | CAM_Value_Add                        | varchar     |
+| 62 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | BM_Value_Add                         | varchar     |
+| 63 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | RM_Value_Add                         | varchar     |
+| 64 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | SH_Value_Add                         | varchar     |
+| 65 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | PH_Value_Add                         | varchar     |
+| 66 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | Highest_Forecast_accuracy            | varchar     |
+| 67 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | Accuracy_Increase_Decrease           | varchar     |
+| 68 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | New_Unconstraint_Accuracy            | varchar     |
+| 69 | GEN_AI_NEW      | dbo            | SNOP_Value_Add_RCA | Skip_Collaboration_Accuracy_Increase | varchar     |"
+289541-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.Inv_Liq_Hist (
+    DMDUNIT varchar,
+    DMDGROUP varchar,
+    LOC varchar,
+    STARTDATE date,
+    DUR float,
+    TYPE float,
+    EVENT varchar,
+    QTY float,
+    LOOKUP varchar,
+    GRADE varchar,
+    THICKNESS_MIN float,
+    THICKNESS_MAX float,
+    WIDTH_MIN float,
+    WIDTH_MAX float,
+    Customer_Name varchar,
+    Strategy varchar,
+    Avg_Sales float
+);
+
+
+"
+1840452-doc,documentation,,"The following columns are in the PLANT_PERCENTAGE table in the GEN_AI_NEW database:
+
+|    | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME       | COLUMN_NAME         | DATA_TYPE   |
+|---:|:----------------|:---------------|:-----------------|:--------------------|:------------|
+|  6 | GEN_AI_NEW      | dbo            | PLANT_PERCENTAGE | RES                 | varchar     |
+|  7 | GEN_AI_NEW      | dbo            | PLANT_PERCENTAGE | LOC                 | varchar     |
+|  8 | GEN_AI_NEW      | dbo            | PLANT_PERCENTAGE | UDC_PRODUCT_GROUP   | varchar     |
+|  9 | GEN_AI_NEW      | dbo            | PLANT_PERCENTAGE | Percentage_utilized | float       |"
+1840467-doc,documentation,,"The following columns are in the TOTAL_DEMAND table in the GEN_AI_NEW database:
+
+|     | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME   | COLUMN_NAME      | DATA_TYPE   |
+|----:|:----------------|:---------------|:-------------|:-----------------|:------------|
+| 312 | GEN_AI_NEW      | dbo            | TOTAL_DEMAND | ITEM             | varchar     |
+| 313 | GEN_AI_NEW      | dbo            | TOTAL_DEMAND | TOTAL_DEMAND     | int         |
+| 314 | GEN_AI_NEW      | dbo            | TOTAL_DEMAND | Total_MET_DEMAND | int         |"
+287093-ddl,ddl,,"
+CREATE TABLE [GEN_AI_NEW].[dbo].[udt_allocation_detail_report] (
+    DEMAND_GROUP VARCHAR(255),
+    PLANNING_ITEM VARCHAR(255),
+    DEMAND_LOCATION VARCHAR(255),
+    FORECAST_DATE DATE,
+    INV_AT_PLANT FLOAT,
+    INV_AT_NONPLANT FLOAT,
+    ALLOCATION_DEMAND_GROUP VARCHAR(255),
+    ALLOCATION_ITEM VARCHAR(255),
+    PLANT VARCHAR(255),
+    AVAIL_DATE DATE,
+    ALLOCATION_QUANTITY FLOAT,
+    SUPPLY FLOAT,
+    INV_QUANTITY_PLANT FLOAT,
+    INV_QUANTITY_NONPLANT FLOAT,
+    CONSTRAINT_FORECAST FLOAT,
+    PRODUCTION_ALLOCATIONS FLOAT,
+    CONSUMED_QUANTITY FLOAT,
+    FREE_ALLOCATIONS FLOAT,
+    [Order] FLOAT
+);
+
+
+"
+400103-sql,sql,What is the recommendation for the optimal statistical algorithm and parameters for this product and customer?,"select distinct product,customer as Region, round (BY_Forecast,0) as BY_Forecast,BY_Algorithm,round (BY_Alpha_Parameter,2) as BY_Alpha_Parameter, round(BY_Beta_Parameter,2) as BY_Beta_Parameter, round(BY_Gamma_Parameter,2) as BY_Gamma_Parameter, round(Optimal_Forecast,0) as Optimal_Forecast, Optimal_Algorithm, round(Optimal_Alpha_Parameter,2) as Optimal_Alpha_Parameter, round(Optimal_Beta_Parameter,2) as Optimal_Beta_Parameter, round(Optimal_Gamma_Parameter,2) as Optimal_Gamma_Parameter from Optimal_Statistical_Output where month='01-07-2024'order by 1 desc;"
+407088-sql,sql,"What are the Unrestricted Quantity, Inspection Quantity, Blocked Quantity, and In-Hand Stock Quantity by Product Form?","select DC as [Distribution Channel],sales_office as [Sales Office],form as [Product Form],round(sum(uq),0) as [Unrestricted Quantity],round(sum(iq),0) as [Inspection Quantity], round(sum(bq),0) as [Blocked Quantity],round(sum(sq),0) as [In Hand Stock Quantity] from inv_stock_clear where NCO_DECLARED='Yes' AND dc='OEM' AND SALES_OFFICE='Mumbai' group by form,material,dc,sales_office order by [In Hand Stock Quantity] desc;"
+285436-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.Optimal_Statistical_Output (
+    Product varchar,
+    Customer varchar,
+    Month date,
+    Avg_3_months_sales float,
+    BY_Forecast float,
+    Optimal_Forecast float,
+    New_Forecast float,
+    BY_Accuracy varchar,
+    Optimal_Accuracy varchar,
+    New_Accuracy varchar,
+    Increase_Decrease varchar,
+    BY_Alpha_Parameter float,
+    BY_Beta_Parameter float,
+    BY_Gamma_Parameter float,
+    Optimal_Alpha_Parameter float,
+    Optimal_Beta_Parameter float,
+    Optimal_Gamma_Parameter float,
+    Optimal_Algorithm varchar,
+    BY_Algorithm varchar
+);
+
+
+"
+1840459-doc,documentation,,"The following columns are in the sales_order_status table in the GEN_AI_NEW database:
+
+|     | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME         | COLUMN_NAME                  | DATA_TYPE   |
+|----:|:----------------|:---------------|:-------------------|:-----------------------------|:------------|
+| 115 | GEN_AI_NEW      | dbo            | sales_order_status | SALES_ORDER_NUMBER           | varchar     |
+| 116 | GEN_AI_NEW      | dbo            | sales_order_status | LINE_ITEM_NUMBER             | varchar     |
+| 117 | GEN_AI_NEW      | dbo            | sales_order_status | CUSTOMER_NAME                | varchar     |
+| 118 | GEN_AI_NEW      | dbo            | sales_order_status | SOLD_TO_PARTY                | int         |
+| 119 | GEN_AI_NEW      | dbo            | sales_order_status | DEMAND_GROUP                 | varchar     |
+| 120 | GEN_AI_NEW      | dbo            | sales_order_status | SHIP_TO_STATE                | varchar     |
+| 121 | GEN_AI_NEW      | dbo            | sales_order_status | SHIP_TO_BRANCH               | varchar     |
+| 122 | GEN_AI_NEW      | dbo            | sales_order_status | REGION                       | varchar     |
+| 123 | GEN_AI_NEW      | dbo            | sales_order_status | SEGMENT                      | varchar     |
+| 124 | GEN_AI_NEW      | dbo            | sales_order_status | PRODUCT_FORM                 | varchar     |
+| 125 | GEN_AI_NEW      | dbo            | sales_order_status | ITEM                         | varchar     |
+| 126 | GEN_AI_NEW      | dbo            | sales_order_status | PLANT_NAME                   | varchar     |
+| 127 | GEN_AI_NEW      | dbo            | sales_order_status | PLANT                        | varchar     |
+| 128 | GEN_AI_NEW      | dbo            | sales_order_status | ORDER_TYPE                   | varchar     |
+| 129 | GEN_AI_NEW      | dbo            | sales_order_status | DELIVERY_TARGET_DATE         | date        |
+| 130 | GEN_AI_NEW      | dbo            | sales_order_status | PROMISED_TARGET_QUANTITY     | smallint    |
+| 131 | GEN_AI_NEW      | dbo            | sales_order_status | ORIGINAL_ORDER_QUANTITY      | smallint    |
+| 132 | GEN_AI_NEW      | dbo            | sales_order_status | CAM                          | varchar     |
+| 133 | GEN_AI_NEW      | dbo            | sales_order_status | BATCH                        | varchar     |
+| 134 | GEN_AI_NEW      | dbo            | sales_order_status | PRODUCTION_TARGET_DATE       | date        |
+| 135 | GEN_AI_NEW      | dbo            | sales_order_status | ACTUAL_PRODUCTION_DATE       | date        |
+| 136 | GEN_AI_NEW      | dbo            | sales_order_status | DO_TARGET_DATE               | date        |
+| 137 | GEN_AI_NEW      | dbo            | sales_order_status | ACTUAL_DO_CREATION_DATE      | date        |
+| 138 | GEN_AI_NEW      | dbo            | sales_order_status | ACTUAL_INVOICE_CREATION_DATE | date        |
+| 139 | GEN_AI_NEW      | dbo            | sales_order_status | ACTUAL_DELIVERY_DATE         | date        |
+| 140 | GEN_AI_NEW      | dbo            | sales_order_status | ACTUAL_PRODUCTION_QUANTITY   | smallint    |
+| 141 | GEN_AI_NEW      | dbo            | sales_order_status | ACTUAL_DISPATCH_QUANTITY     | smallint    |
+| 142 | GEN_AI_NEW      | dbo            | sales_order_status | ACTUAL_INVOICE_QUANTITY      | smallint    |
+| 143 | GEN_AI_NEW      | dbo            | sales_order_status | TOTAL_PRODUCTION_QUANTITY    | smallint    |
+| 144 | GEN_AI_NEW      | dbo            | sales_order_status | TOTAL_INVOICE_QUANTITY       | smallint    |
+| 145 | GEN_AI_NEW      | dbo            | sales_order_status | KEY                          | varchar     |
+| 146 | GEN_AI_NEW      | dbo            | sales_order_status | OTIF                         | varchar     |"
+402275-sql,sql,How many orders are delayed due to campaign unavailability?,"SELECT Product_Form AS PRODUCT_FORM, COUNT(DISTINCT PART_ID) AS ORDER_COUNT, ROUND(SUM(ORDER_QTY), 0) AS ORDER_QTY, CONCAT(ROUND(AVG(DAYS_LATE), 0), ' ', 'Days') AS AVG_LATENESS FROM [GEN_AI_NEW].[dbo].late_order_reasons WHERE REASON_CATEGORY = 'Campaign Unavailable' GROUP BY PRODUCT_FORM ORDER BY ORDER_QTY DESC;"
+407089-sql,sql,"What are the Unrestricted Quantity, Inspection Quantity, Blocked Quantity, and In-Hand Stock Quantity by Product Form and Grade?","select DC as [Distribution Channel],sales_office as [Sales Office],form as [Product Form],grade_grp as Grade,round(sum(uq),0) as [Unrestricted Quantity],round(sum(iq),0) as [Inspection Quantity], round(sum(bq),0) as [Blocked Quantity],round(sum(sq),0) as [In Hand Stock Quantity] from inv_stock_clear where NCO_DECLARED='Yes' and  DC='OEM' AND SALES_OFFICE='Mumbai' and form='S_HRCF' group by form,grade_grp,DC,SALES_OFFICE order by [In Hand Stock Quantity] desc;"
+402305-sql,sql,Can forecast accuracy be improved by considering significant causal factors?,"SELECT DISTINCT CONCAT('01','-',RIGHT([Test_period],2),'-',LEFT([test_period],4)) AS [Month], [Key] AS DFU, REVERSE(PARSENAME(REPLACE(REVERSE([Key]), '/', '.'), 1)) AS [Customer], REVERSE(PARSENAME(REPLACE(REVERSE([Key]), '/', '.'), 2)) AS [Product], Features AS [Significant Causals], Test_Period, ROUND(Actuals,0) AS Sales, ROUND(Pred,0) AS Forecast, ROUND(Accuracy,0) AS [Forecast Accuracy%] FROM [GEN_AI_NEW].[dbo].[Model_Results] WHERE model = 'SEL Var MLR' AND [key] = 'R01/15/All_Location';"
+407086-sql,sql,"What are the Unrestricted Quantity, Inspection Quantity, Blocked Quantity, and In-Hand Stock Quantity by Sales Office?","select dc as [Distribution Channel] , sales_office as [Sales Office],round(sum(uq),0) as [Unrestricted Quantity],round(sum(iq),0) as [Inspection Quantity], round(sum(bq),0) as [Blocked Quantity],round(sum(sq),0) as [In Hand Stock Quantity] from inv_stock_clear where NCO_DECLARED='Yes' and sales_office is not null and dc='OEM' group by sales_office,dc order by [In Hand Stock Quantity] desc;"
+407071-sql,sql,"What is the upstream item of 'PPGL_CL_HARD_PLAIN_0.35-0.45_1101-1235' produced on KMIL, and how much extra quantity is required to meet the unmet demand?","select Distinct item as Item, ROUND(EXTRA_QTY,0) as Extra_Qty from upstream_resources WHERE res like 'KMIL%';"
+282146-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.PLANT_PERCENTAGE (
+    RES varchar,
+    LOC varchar,
+    UDC_PRODUCT_GROUP varchar,
+    Percentage_utilized float
+);
+
+
+"
+400095-sql,sql,What if I skip collaboration where the value added is zero or negative?,"select distinct Product,Customer, CONVERT ( varchar,MONTH, 32) AS Month, round(Avg_3_month_sales,0) as Avg_3Month_sales, Stat_Accuracy, PH_Accuracy, Skip_Collaboration_Accuracy_Increase  from SNOP_Value_Add_RCA where month ='01-06-2024'and product='15' and customer in ('WEST','NORTH') and Cust_Segment in ('Emerging','Strategic','Focus') and Skip_Collaboration_Accuracy_Increase not like '%-%' order by 4 desc;"
+407057-sql,sql,What is the resource utilization for all plants for the upcoming month?,"select LOC AS Plant, res as Resource , ROUND(pct_used,2) as [Resource_Utilisation %] from resource_utilization where res not like '%DUMMY%' AND Total_produced_qty <> ' ' ;"
+401640-sql,sql,Which sales orders are only partially promised?,"SELECT [SALES_ORDER_NUMBER] AS ""SALES ORDER NUMBER"", [LINE_ITEM_NUMBER] AS ""LINE ITEM NUMBER"", [SOLD_TO_PARTY] AS ""SOLD TO PARTY"", [DEMAND_GROUP] AS ""DEMAND GROUP"", [PRODUCT_FORM] AS ""PRODUCT FORM"", ITEM AS ""ITEM"", PLANT AS ""PLANT"", [PLANT_NAME] AS ""PLANT NAME"", MAX([PRODUCTION_TARGET_DATE]) AS ""PRODUCTION TARGET DATE"", MAX([ACTUAL_PRODUCTION_DATE]) AS ""ACTUAL PRODUCTION DATE"", AVG([TOTAL_PRODUCTION_QUANTITY]) AS ""TOTAL PRODUCTION QUANTITY"", AVG([PROMISED_TARGET_QUANTITY]) AS ""PROMISED TARGET QUANTITY"", MAX([DO_TARGET_DATE]) AS ""DO TARGET DATE"", MAX([ACTUAL_DO_CREATION_DATE]) AS ""ACTUAL DO CREATION DATE"", MAX([DELIVERY_TARGET_DATE]) AS ""DELIVERY TARGET DATE"", MAX([ACTUAL_DELIVERY_DATE]) AS ""ACTUAL DELIVERY DATE"", AVG([PROMISED_TARGET_QUANTITY]) AS ""PROMISED TARGET QUANTITY"", AVG([ACTUAL_INVOICE_QUANTITY]) AS ""ACTUAL INVOICE QUANTITY"", AVG([ORIGINAL_ORDER_QUANTITY]) AS ""ORIGINAL ORDER QUANTITY"" FROM SALES_ORDER_STATUS WHERE [ORIGINAL_ORDER_QUANTITY] > [PROMISED_TARGET_QUANTITY] GROUP BY [SALES_ORDER_NUMBER], [LINE_ITEM_NUMBER], [SOLD_TO_PARTY], [DEMAND_GROUP], [PRODUCT_FORM], ITEM, PLANT, [PLANT_NAME];"
+394102-sql,sql,What is the fill rate for customer orders and forecast orders by month?,"SELECT CONVERT(varchar, MONTH, 32) AS Month, ROUND(SUM(TOTAL_CUST_ORDER), 0) AS Total_Cust_Orders, ROUND(SUM(TOT_CUSTORDER_ALLOCATION), 0) AS Total_Met_Cust_Order, CASE WHEN SUM(TOTAL_CUST_ORDER) = 0 THEN '0%' ELSE CONCAT(ROUND((SUM(TOT_CUSTORDER_ALLOCATION) / SUM(TOTAL_CUST_ORDER)) * 100, 0), '%') END AS Cust_Order_Fill_Rate, ROUND(SUM(TOT_FORCAST_ORDER), 0) AS Total_Fcst_Orders, ROUND(SUM(TOT_FCSTORDER_ALLOCATION), 0) AS Total_Met_Fcst_Order, CASE WHEN SUM(TOT_FORCAST_ORDER) = 0 THEN '0%' ELSE CONCAT(ROUND((SUM(TOT_FCSTORDER_ALLOCATION) / SUM(TOT_FORCAST_ORDER) * 100), 0), '%') END AS Fcst_Order_Fill_Rate FROM udt_order_fulfillment WHERE simulation_name = 'MONTHLY_MAX_DEMSAT' GROUP BY MONTH;"
+1840456-doc,documentation,,"The following columns are in the Statistical_Data table in the GEN_AI_NEW database:
+
+|    | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME       | COLUMN_NAME                         | DATA_TYPE   |
+|---:|:----------------|:---------------|:-----------------|:------------------------------------|:------------|
+| 70 | GEN_AI_NEW      | dbo            | Statistical_Data | Product                             | varchar     |
+| 71 | GEN_AI_NEW      | dbo            | Statistical_Data | Customer                            | varchar     |
+| 72 | GEN_AI_NEW      | dbo            | Statistical_Data | Total_Percent_of_Sales_Contribution | varchar     |
+| 73 | GEN_AI_NEW      | dbo            | Statistical_Data | Startdate                           | date        |
+| 74 | GEN_AI_NEW      | dbo            | Statistical_Data | Actuals                             | float       |
+| 75 | GEN_AI_NEW      | dbo            | Statistical_Data | Forecast                            | float       |
+| 76 | GEN_AI_NEW      | dbo            | Statistical_Data | Accuracy                            | varchar     |
+| 77 | GEN_AI_NEW      | dbo            | Statistical_Data | BY_Algorithm                        | varchar     |
+| 78 | GEN_AI_NEW      | dbo            | Statistical_Data | Data_Pattern_Type                   | varchar     |
+| 79 | GEN_AI_NEW      | dbo            | Statistical_Data | Trend                               | varchar     |
+| 80 | GEN_AI_NEW      | dbo            | Statistical_Data | Seasonality_Check                   | varchar     |
+| 81 | GEN_AI_NEW      | dbo            | Statistical_Data | BY_Alpha_Parameter                  | float       |
+| 82 | GEN_AI_NEW      | dbo            | Statistical_Data | BY_Beta_Parameter                   | float       |
+| 83 | GEN_AI_NEW      | dbo            | Statistical_Data | BY_Gamma_Parameter                  | float       |"
+394110-sql,sql,How can we improve the fill rate for these products?,"SELECT DISTINCT ITEM as Item, RES as Resource , ROUND(prodrate,2) AS Production_Rate ,ROUND(max_prodrate,2) as Max_Production_Rate,ROUND((max_prodrate-prodrate),2) as Increase_In_TPH, ROUND(yield,2) AS Yield, ROUND(max_yield,2) as Max_Yield, ROUND((max_yield-yield),2) as Increase_In_Yield from ABP_DATA;"
+1840466-doc,documentation,,"The following columns are in the Resource_utilization table in the GEN_AI_NEW database:
+
+|     | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME           | COLUMN_NAME                   | DATA_TYPE   |
+|----:|:----------------|:---------------|:---------------------|:------------------------------|:------------|
+| 299 | GEN_AI_NEW      | dbo            | Resource_utilization | Month                         | date        |
+| 300 | GEN_AI_NEW      | dbo            | Resource_utilization | LOC                           | varchar     |
+| 301 | GEN_AI_NEW      | dbo            | Resource_utilization | RES                           | varchar     |
+| 302 | GEN_AI_NEW      | dbo            | Resource_utilization | Total_produced_qty            | float       |
+| 303 | GEN_AI_NEW      | dbo            | Resource_utilization | Prime_qty                     | float       |
+| 304 | GEN_AI_NEW      | dbo            | Resource_utilization | Co_prod_qty                   | float       |
+| 305 | GEN_AI_NEW      | dbo            | Resource_utilization | Load_hours                    | float       |
+| 306 | GEN_AI_NEW      | dbo            | Resource_utilization | UDC_MONTH_CAPACITY_HRS        | float       |
+| 307 | GEN_AI_NEW      | dbo            | Resource_utilization | Pct_Used                      | float       |
+| 308 | GEN_AI_NEW      | dbo            | Resource_utilization | eff_Prodrate_Full_capacity    | float       |
+| 309 | GEN_AI_NEW      | dbo            | Resource_utilization | eff_prod_rate_loaded_capacity | float       |
+| 310 | GEN_AI_NEW      | dbo            | Resource_utilization | Eff_Yield_rate                | float       |
+| 311 | GEN_AI_NEW      | dbo            | Resource_utilization | updated_pct_used              | float       |"
+289543-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.POSSIBLE_REASONS (
+    [Possible Reasons] varchar,
+    [Corrective Actions] varchar
+);
+
+
+
+"
+1840454-doc,documentation,,"The following columns are in the Optimal_Statistical_Output table in the GEN_AI_NEW database:
+
+|    | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME                 | COLUMN_NAME             | DATA_TYPE   |
+|---:|:----------------|:---------------|:---------------------------|:------------------------|:------------|
+| 22 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | Product                 | varchar     |
+| 23 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | Customer                | varchar     |
+| 24 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | Month                   | date        |
+| 25 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | Avg_3_months_sales      | float       |
+| 26 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | BY_Forecast             | float       |
+| 27 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | Optimal_Forecast        | float       |
+| 28 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | New_Forecast            | float       |
+| 29 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | BY_Accuracy             | varchar     |
+| 30 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | Optimal_Accuracy        | varchar     |
+| 31 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | New_Accuracy            | varchar     |
+| 32 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | Increase_Decrease       | varchar     |
+| 33 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | BY_Alpha_Parameter      | float       |
+| 34 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | BY_Beta_Parameter       | float       |
+| 35 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | BY_Gamma_Parameter      | float       |
+| 36 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | Optimal_Alpha_Parameter | float       |
+| 37 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | Optimal_Beta_Parameter  | float       |
+| 38 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | Optimal_Gamma_Parameter | float       |
+| 39 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | Optimal_Algorithm       | varchar     |
+| 40 | GEN_AI_NEW      | dbo            | Optimal_Statistical_Output | BY_Algorithm            | varchar     |"
+402274-sql,sql,"List the constrained materials, their supply quantities, and arrival dates.","SELECT DISTINCT ORDERED_PART, ROUND(SUM(Supply_Quantity), 0) AS SUPPLY_QUANTITY, CONVERT(VARCHAR, Arrival_Time, 105) AS ARRIVAL_TIME FROM [GEN_AI_NEW].[dbo].[RM_Supply_Report] WHERE SUPPLY_TYPE = 'PO' AND ORDERED_PART IN (SELECT DISTINCT Late_Part FROM [GEN_AI_NEW].[dbo].[late_order_reasons] WHERE Late_Part NOT LIKE '%Null%' AND Order_Qty > '50' AND Product_Form = 'S_PPGLCF' GROUP BY Late_Part) GROUP BY ORDERED_PART, Arrival_Time ORDER BY SUPPLY_QUANTITY DESC;"
+282143-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.ABP_DATA (
+    ITEM varchar,
+    Res varchar,
+    PRODRATE float,
+    Max_Prodrate float,
+    Yield float,
+    MAX_Yield float
+);
+
+"
+394101-sql,sql,What is the overall fill rate for all months?,"select CONVERT ( varchar,MONTH, 32) AS Month, ROUND(SUM(TOTAL_ORDER),0) AS Total_Orders, ROUND(SUM(TOTAL_ALLOCATION),0) AS Met_Orders, CONCAT(ROUND((SUM(TOTAL_ALLOCATION)/SUM(TOTAL_ORDER))*100,0),'%') AS Fill_Rate from udt_order_fulfillment where simulation_name ='MONTHLY_MAX_DEMSAT' GROUP BY MONTH;"
+1840462-doc,documentation,,"The following columns are in the RM_Supply_Report table in the GEN_AI_NEW database:
+
+|     | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME       | COLUMN_NAME        | DATA_TYPE   |
+|----:|:----------------|:---------------|:-----------------|:-------------------|:------------|
+| 243 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Ordered_Part       | varchar     |
+| 244 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Description        | varchar     |
+| 245 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Inventory_Buffer   | varchar     |
+| 246 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Vendor             | varchar     |
+| 247 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Supply_Type        | varchar     |
+| 248 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Supply_Quantity    | float       |
+| 249 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Supply             | varchar     |
+| 250 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Arrival_Time       | datetime2   |
+| 251 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Total_Fed_Quantity | float       |
+| 252 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Unused_Quantity    | float       |
+| 253 | GEN_AI_NEW      | dbo            | RM_Supply_Report | No_of_Orders_Fed   | float       |
+| 254 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Orders_Fed         | varchar     |
+| 255 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Action_Quantity    | float       |
+| 256 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Available_Time     | datetime2   |
+| 257 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Latest_Needed_Time | varchar     |
+| 258 | GEN_AI_NEW      | dbo            | RM_Supply_Report | Start_of_Bucket    | varchar     |
+| 259 | GEN_AI_NEW      | dbo            | RM_Supply_Report | End_of_Bucket      | varchar     |
+| 260 | GEN_AI_NEW      | dbo            | RM_Supply_Report | PO_Release_Time    | varchar     |
+| 261 | GEN_AI_NEW      | dbo            | RM_Supply_Report | LPST_Message       | varchar     |
+| 262 | GEN_AI_NEW      | dbo            | RM_Supply_Report | PST_Message        | varchar     |"
+401642-sql,sql,What actions can I take to improve allocations for partially promised orders?,"SELECT [ALLOCATION_DEMAND_GROUP] AS ""ALLOCATION DEMAND GROUP"", [ALLOCATION_ITEM] AS ""ALLOCATION ITEM"", PLANT AS ""PLANT"", [AVAIL_DATE] AS ""AVAIL DATE"", [ALLOCATION_QUANTITY] AS ""ALLOCATION QUANTITY"", [CONSUMED_QUANTITY] AS ""CONSUMED QUANTITY"", [FREE_ALLOCATIONS] AS ""FREE ALLOCATIONS"" FROM UDT_ALLOCATION_DETAIL_REPORT WHERE [FREE_ALLOCATIONS]<>0;"
+400880-sql,sql,What is the potential improvement in forecast accuracy?,"SELECT Product, Customer, Month, (New_Forecast - Optimal_Forecast) AS Potential_Improvement
+FROM Optimal_Statistical_Output;"
+1840463-doc,documentation,,"The following columns are in the Sales_Data table in the GEN_AI_NEW database:
+
+|     | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME   | COLUMN_NAME     | DATA_TYPE   |
+|----:|:----------------|:---------------|:-------------|:----------------|:------------|
+| 263 | GEN_AI_NEW      | dbo            | Sales_Data   | customer        | varchar     |
+| 264 | GEN_AI_NEW      | dbo            | Sales_Data   | product         | float       |
+| 265 | GEN_AI_NEW      | dbo            | Sales_Data   | loc             | varchar     |
+| 266 | GEN_AI_NEW      | dbo            | Sales_Data   | MD              | date        |
+| 267 | GEN_AI_NEW      | dbo            | Sales_Data   | Qty             | float       |
+| 268 | GEN_AI_NEW      | dbo            | Sales_Data   | AC_PROD         | float       |
+| 269 | GEN_AI_NEW      | dbo            | Sales_Data   | REF_PROD        | float       |
+| 270 | GEN_AI_NEW      | dbo            | Sales_Data   | CEMENT_PROD     | float       |
+| 271 | GEN_AI_NEW      | dbo            | Sales_Data   | COMPRESSOR_PROD | float       |
+| 272 | GEN_AI_NEW      | dbo            | Sales_Data   | CONS_MACH_PROD  | float       |
+| 273 | GEN_AI_NEW      | dbo            | Sales_Data   | CRANES_PROD     | float       |
+| 274 | GEN_AI_NEW      | dbo            | Sales_Data   | OIL_PROD        | float       |
+| 275 | GEN_AI_NEW      | dbo            | Sales_Data   | CV_PROD         | float       |
+| 276 | GEN_AI_NEW      | dbo            | Sales_Data   | MINING_PROD     | float       |
+| 277 | GEN_AI_NEW      | dbo            | Sales_Data   | PAINT_PROD      | float       |
+| 278 | GEN_AI_NEW      | dbo            | Sales_Data   | VARNISH_PROD    | float       |
+| 279 | GEN_AI_NEW      | dbo            | Sales_Data   | PUMP_PROD       | float       |
+| 280 | GEN_AI_NEW      | dbo            | Sales_Data   | PV_PROD         | float       |
+| 281 | GEN_AI_NEW      | dbo            | Sales_Data   | STEEL_PROD      | float       |
+| 282 | GEN_AI_NEW      | dbo            | Sales_Data   | TRACTOR_PROD    | float       |
+| 283 | GEN_AI_NEW      | dbo            | Sales_Data   | TRANS_PROD      | float       |
+| 284 | GEN_AI_NEW      | dbo            | Sales_Data   | Key             | varchar     |
+| 285 | GEN_AI_NEW      | dbo            | Sales_Data   | Rank            | float       |"
+1840457-doc,documentation,,"The following columns are in the P_val table in the GEN_AI_NEW database:
+
+|    | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME   | COLUMN_NAME   | DATA_TYPE   |
+|---:|:----------------|:---------------|:-------------|:--------------|:------------|
+| 84 | GEN_AI_NEW      | dbo            | P_val        | index         | varchar     |
+| 85 | GEN_AI_NEW      | dbo            | P_val        | coef          | float       |
+| 86 | GEN_AI_NEW      | dbo            | P_val        | std_err       | float       |
+| 87 | GEN_AI_NEW      | dbo            | P_val        | t             | float       |
+| 88 | GEN_AI_NEW      | dbo            | P_val        | P_t           | float       |
+| 89 | GEN_AI_NEW      | dbo            | P_val        | _0_025        | float       |
+| 90 | GEN_AI_NEW      | dbo            | P_val        | _0_975        | float       |
+| 91 | GEN_AI_NEW      | dbo            | P_val        | Name          | varchar     |
+| 92 | GEN_AI_NEW      | dbo            | P_val        | RSQUARE       | float       |
+| 93 | GEN_AI_NEW      | dbo            | P_val        | ADJ_RSQUARE   | float       |
+| 94 | GEN_AI_NEW      | dbo            | P_val        | Importances   | float       |
+| 95 | GEN_AI_NEW      | dbo            | P_val        | Check         | float       |"
+287385-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.Model_Results (
+    TEST_Period date,
+    Actuals float,
+    Key varchar,
+    Pred float,
+    Error float,
+    Error1 float,
+    Accuracy float,
+    Features varchar,
+    Rsquare float,
+    Adj_Rsquare float,
+    Model varchar
+);
+
+"
+1840461-doc,documentation,,"The following columns are in the BTP_BTR_KLM table in the GEN_AI_NEW database:
+
+|     | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME   | COLUMN_NAME             | DATA_TYPE   |
+|----:|:----------------|:---------------|:-------------|:------------------------|:------------|
+| 169 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | SALESORDER_ID           | varchar     |
+| 170 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | SALES_LINENUM           | varchar     |
+| 171 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | SCHEDLINE               | varchar     |
+| 172 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | PRODUCTFORM             | varchar     |
+| 173 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | PLANT                   | varchar     |
+| 174 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | MOQ_STATUS              | varchar     |
+| 175 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | ORDER_WIDTH             | float       |
+| 176 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | ORDER_THICKNESS         | float       |
+| 177 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | PRODUCED_MATERIAL       | varchar     |
+| 178 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | CONSUMING_MATERIAL      | varchar     |
+| 179 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | JSW_GRADE               | varchar     |
+| 180 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | OUTPUT_WIDTH            | float       |
+| 181 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | OUTPUT_THICKNESS        | float       |
+| 182 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | CONSUMED_QTY            | float       |
+| 183 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | BALANCE_TO_DISPATCH_QTY | float       |
+| 184 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | CUST_NAME               | varchar     |
+| 185 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | OP_PROMISE_DATE         | date        |
+| 186 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | ITEM                    | varchar     |
+| 187 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | PRODUCTIONORDERID       | varchar     |
+| 188 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | ROUTINGID               | varchar     |
+| 189 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | RES                     | varchar     |
+| 190 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | OPERATION               | varchar     |
+| 191 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | OPERATIONSEQ            | varchar     |
+| 192 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | PRIMARYRESOURCENAME     | varchar     |
+| 193 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | PLANNEDSTARTDATE        | datetime2   |
+| 194 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | PLANNEDENDDATE          | datetime2   |
+| 195 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | QTYPRODUCED             | float       |
+| 196 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | EPST                    | date        |
+| 197 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | LPST                    | date        |
+| 198 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | BALANCEQUEUETIME        | float       |
+| 199 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | QTYSTARTED              | float       |
+| 200 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | STDRUNTIME              | float       |
+| 201 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | PLANNEDREADYDATE        | date        |
+| 202 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | SIMULATION_NAME         | varchar     |
+| 203 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | CRSD                    | date        |
+| 204 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | PRODUCTION_CONFIRMED    | varchar     |
+| 205 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | FP_FIRST_COMMIT_DATE    | date        |
+| 206 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | FP_LATEST_COMMIT_DATE   | date        |
+| 207 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | ORDER_TYPE              | varchar     |
+| 208 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | SEGMENT                 | varchar     |
+| 209 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | PRIORITY_NUM            | float       |
+| 210 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | SEGMENTATION            | varchar     |
+| 211 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | WIDTH                   | smallint    |
+| 212 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | THICKNESS               | float       |
+| 213 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | LENGTH                  | varchar     |
+| 214 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | AL_ZINC_COATING_MIN     | varchar     |
+| 215 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | TOP_COLOUR              | varchar     |
+| 216 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | BOTTOM_COLOUR           | varchar     |
+| 217 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | ZINC_COATING            | smallint    |
+| 218 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | GUARD_FILM              | varchar     |
+| 219 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | COIL_ID_MM              | smallint    |
+| 220 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | CUST_SURFACE_FINISH     | varchar     |
+| 221 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | S_SPANGLE_TYPE          | varchar     |
+| 222 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | S_PASSIVATION           | varchar     |
+| 223 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | S_PAINT_TYPE            | varchar     |
+| 224 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | END_APPLICATION         | varchar     |
+| 225 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | TIN_COAT_TOP            | varchar     |
+| 226 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | TIN_COAT_BOT            | varchar     |
+| 227 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | TIN_REDUCTION_TYPE      | varchar     |
+| 228 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | TIN_PRODUCT_CATEGORY    | varchar     |
+| 229 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | MODE_OF_TRANSPORT       | varchar     |
+| 230 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | UNLOADING_POINT         | varchar     |
+| 231 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | RECEIVING_POINT         | varchar     |
+| 232 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | FG_GRADE                | varchar     |
+| 233 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | GRADEFAMILY             | varchar     |
+| 234 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | GRADE_CHARACTERISTIC    | varchar     |
+| 235 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | COIL_WT_MIN             | float       |
+| 236 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | COIL_WT_MAX             | float       |
+| 237 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | FG_QTY                  | varchar     |
+| 238 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | WIP_QTY                 | varchar     |
+| 239 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | ORDER_LATENESS          | smallint    |
+| 240 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | ORDER_STATUS            | varchar     |
+| 241 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | PROD_RATE               | float       |
+| 242 | GEN_AI_NEW      | dbo            | BTP_BTR_KLM  | YIELD                   | float       |"
+407060-sql,sql,Can you provide the most underutilized resources at the Kalmeshwar plant?,"select LOC AS Plant, res as Resource,CONCAT(ROUND(pct_used,2),'%') as Percentage_Utilised from resource_utilization where res not like '%DUMMY%' AND Total_produced_qty <> ' ' and pct_used <55  AND LOC ='1018';"
+402267-sql,sql,What are the bottleneck resources causing order delays?,"SELECT TOP 5 RES, Operation, COUNT(DISTINCT PART_ID) AS ORDER_COUNT, ROUND(SUM(DISTINCT Order_Qty), 0) AS ORDER_QTY FROM [GEN_AI_NEW].[dbo].[late_order_reasons] WHERE REASON_CATEGORY = 'Capacity Constraint' AND Late_Reason LIKE 'CAO Push:%' AND Product_Form = 'S_PPGLCF' GROUP BY RES, Operation ORDER BY ORDER_QTY DESC;"
+394105-sql,sql,Which product group has the lowest fill rate in the upcoming month?,"SELECT PRODUCT_GRP AS Product_Group, ROUND(SUM(TOTAL_ORDER), 0) AS Total_Orders, ROUND(SUM(TOTAL_ALLOCATION), 0) AS Total_Met_Orders, CONCAT(ROUND((SUM(TOTAL_ALLOCATION) / SUM(TOTAL_ORDER)) * 100, 0), '%') AS Fill_Rate FROM udt_order_fulfillment WHERE simulation_name = 'MONTHLY_MAX_DEMSAT' AND MONTH = '01-08-24' GROUP BY PRODUCT_GRP ORDER BY SUM(TOTAL_ALLOCATION) / SUM(TOTAL_ORDER) ASC;"
+407065-sql,sql,"What are the possible reasons for resource underutilization, and what corrective actions can be taken?",select  * from possible_reasons;
+402264-sql,sql,Show me the top 3 reasons for order delays.,"SELECT TOP 3 REASON_CATEGORY, COUNT(DISTINCT PART_ID) AS ORDER_COUNT, ROUND(SUM(DISTINCT Order_Qty), 0) AS ORDER_QTY FROM [GEN_AI_NEW].[dbo].[late_order_reasons] WHERE Product_Form = 'S_PPGLCF' GROUP BY REASON_CATEGORY ORDER BY ORDER_QTY DESC;"
+287345-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.BTP_BTR_KLM (
+    SALESORDER_ID varchar,
+    SALES_LINENUM varchar,
+    SCHEDLINE varchar,
+    PRODUCTFORM varchar,
+    PLANT varchar,
+    MOQ_STATUS varchar,
+    ORDER_WIDTH float,
+    ORDER_THICKNESS float,
+    PRODUCED_MATERIAL varchar,
+    CONSUMING_MATERIAL varchar,
+    JSW_GRADE varchar,
+    OUTPUT_WIDTH float,
+    OUTPUT_THICKNESS float,
+    CONSUMED_QTY float,
+    BALANCE_TO_DISPATCH_QTY float,
+    CUST_NAME varchar,
+    OP_PROMISE_DATE date,
+    ITEM varchar,
+    PRODUCTIONORDERID varchar,
+    ROUTINGID varchar,
+    RES varchar,
+    OPERATION varchar,
+    OPERATIONSEQ varchar,
+    PRIMARYRESOURCENAME varchar,
+    PLANNEDSTARTDATE datetime2,
+    PLANNEDENDDATE datetime2,
+    QTYPRODUCED float,
+    EPST date,
+    LPST date,
+    BALANCEQUEUETIME float,
+    QTYSTARTED float,
+    STDRUNTIME float,
+    PLANNEDREADYDATE date,
+    SIMULATION_NAME varchar,
+    CRSD date,
+    PRODUCTION_CONFIRMED varchar,
+    FP_FIRST_COMMIT_DATE date,
+    FP_LATEST_COMMIT_DATE date,
+    ORDER_TYPE varchar,
+    SEGMENT varchar,
+    PRIORITY_NUM float,
+    SEGMENTATION varchar,
+    WIDTH smallint,
+    THICKNESS float,
+    LENGTH varchar,
+    AL_ZINC_COATING_MIN varchar,
+    TOP_COLOUR varchar,
+    BOTTOM_COLOUR varchar,
+    ZINC_COATING smallint,
+    GUARD_FILM varchar,
+    COIL_ID_MM smallint,
+    CUST_SURFACE_FINISH varchar,
+    S_SPANGLE_TYPE varchar,
+    S_PASSIVATION varchar,
+    S_PAINT_TYPE varchar,
+    END_APPLICATION varchar,
+    TIN_COAT_TOP varchar,
+    TIN_COAT_BOT varchar,
+    TIN_REDUCTION_TYPE varchar,
+    TIN_PRODUCT_CATEGORY varchar,
+    MODE_OF_TRANSPORT varchar,
+    UNLOADING_POINT varchar,
+    RECEIVING_POINT varchar,
+    FG_GRADE varchar,
+    GRADEFAMILY varchar,
+    GRADE_CHARACTERISTIC varchar,
+    COIL_WT_MIN float,
+    COIL_WT_MAX float,
+    FG_QTY varchar,
+    WIP_QTY varchar,
+    ORDER_LATENESS smallint,
+    ORDER_STATUS varchar,
+    PROD_RATE float,
+    YIELD float
+);
+
+
+
+"
+402260-sql,sql,What is the overall order completion status at the Kalmeshwar plant?,"SELECT ORDER_STATUS, ROUND(SUM(DISTINCT BALANCE_TO_DISPATCH_QTY), 0) AS ORDER_QTY, COUNT(DISTINCT ITEM) AS ORDER_COUNT, CONCAT(CAST(ROUND((COUNT(DISTINCT ITEM) * 100.0 / SUM(COUNT(DISTINCT ITEM)) OVER()), 0) AS INT), '%') AS PERCENT_ORDER_COUNT FROM [GEN_AI_NEW].[dbo].[BTP_BTR_KLM] WHERE OPERATION = 'PACKING' GROUP BY ORDER_STATUS;"
+287383-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.P_val (
+    index varchar,
+    coef float,
+    std_err float,
+    t float,
+    P_t float,
+    _0_025 float,
+    _0_975 float,
+    Name varchar,
+    RSQUARE float,
+    ADJ_RSQUARE float,
+    Importances float,
+    Check float
+);
+
+"
+402272-sql,sql,List the materials causing order delays.,"SELECT DISTINCT Late_Part AS LATE_PART, LATE_PART_TYPE, ROUND(SUM(Total_Quantity), 0) AS QTY_REQUIRED, CONCAT(ROUND(AVG(MFG_LATENESS), 0), ' ', 'Days') AS AVG_LATENESS, ROUND(SUM(DISTINCT Order_Qty), 0) AS ORDER_QTY, COUNT(DISTINCT PART_ID) AS ORDER_COUNT FROM [GEN_AI_NEW].[dbo].[late_order_reasons] WHERE Late_Part NOT LIKE '%Null%' AND Order_Qty > '50' AND Product_Form = 'S_PPGLCF' GROUP BY Late_Part, LATE_PART_TYPE ORDER BY Order_Qty DESC;"
+407068-sql,sql,What are all the upstream resources and their utilization to produce 'PPGL_CL_HARD_PLAIN_0.35-0.45_1101-1235'?,"select a.res as Resource , a.product_group AS Product_Group, ROUND(b.pct_used,2) as [Resource Utilised %] from (Select distinct res,product_group from upstream_resources) a, (select pct_used, res from resource_utilization)b where a.res = b.res;"
+407096-sql,sql,Which new customers can be identified for selling HR Coil Form Inventory based on their purchasing patterns?,"SELECT DISTINCT 'OEM' AS [Distribution Channel], a.sales_office AS [Sales Office], a.form AS [Product Form], 'AHSS' AS Grade, b.customer_name AS [Customer], b.strategy AS [Strategy], b.[avg_sales] AS [Average Sales], ROUND(b.avg_sales / 815, 2) AS [Dilution Proportion], ROUND(1148 * ROUND(b.avg_sales / 815, 2), 0) + 2 AS [Diluted Inventory]  FROM inv_stock_clear AS a  LEFT OUTER JOIN Inv_Liq_Hist AS b ON a.form = b.[lookup] AND a.thick BETWEEN b.thickness_min AND b.thickness_max AND a.width BETWEEN b.width_min AND b.width_max  WHERE a.form = 'S_HRCF' AND a.GRADE_GRP = 'API & High Strength Diversion' AND a.NCO_dECLARED = 'Yes' AND a.dc <> 'Stock Transfer' AND b.strategy IS NOT NULL  ORDER BY [Diluted Inventory] DESC;"
+1840469-doc,documentation,,"The following columns are in the Inv_Liq_Hist table in the GEN_AI_NEW database:
+
+|     | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME   | COLUMN_NAME   | DATA_TYPE   |
+|----:|:----------------|:---------------|:-------------|:--------------|:------------|
+| 325 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | DMDUNIT       | varchar     |
+| 326 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | DMDGROUP      | varchar     |
+| 327 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | LOC           | varchar     |
+| 328 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | STARTDATE     | date        |
+| 329 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | DUR           | float       |
+| 330 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | TYPE          | float       |
+| 331 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | EVENT         | varchar     |
+| 332 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | QTY           | float       |
+| 333 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | LOOKUP        | varchar     |
+| 334 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | GRADE         | varchar     |
+| 335 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | THICKNESS_MIN | float       |
+| 336 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | THICKNESS_MAX | float       |
+| 337 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | WIDTH_MIN     | float       |
+| 338 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | WIDTH_MAX     | float       |
+| 339 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | Customer_Name | varchar     |
+| 340 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | Strategy      | varchar     |
+| 341 | GEN_AI_NEW      | dbo            | Inv_Liq_Hist | Avg_Sales     | float       |"
+407066-sql,sql,"Which items can be produced on the KCCL2 resource, along with their total demand, met demand, and unmet demand?","SELECT ITEM as Item, TOTAL_DEMAND AS Total_Demand, TOTAL_MET_DEMAND AS Met_Demand, (TOTAL_DEMAND - TOTAL_MET_DEMAND) AS Unmet_Demand FROM TOTAL_DEMAND order by Total_Demand DESC;"
+401638-sql,sql,What is the production status of likely OTIF Failure Sales order/Lineitem?,"SELECT [SALES_ORDER_NUMBER] AS ""SALES ORDER NUMBER"", [LINE_ITEM_NUMBER] AS ""LINE ITEM NUMBER"", [SOLD_TO_PARTY] AS ""SOLD TO PARTY"", [DEMAND_GROUP] AS ""DEMAND GROUP"", [PRODUCT_FORM] AS ""PRODUCT FORM"", ITEM AS ""ITEM"", PLANT AS ""PLANT"", [PLANT_NAME] AS ""PLANT NAME"", BATCH AS ""BATCH"", MAX([PRODUCTION_TARGET_DATE]) AS ""PRODUCTION TARGET DATE"", MAX([ACTUAL_PRODUCTION_DATE]) AS ""ACTUAL PRODUCTION DATE"", MAX([ACTUAL_PRODUCTION_QUANTITY]) AS ""ACTUAL PRODUCTION QUANTITY"", AVG([TOTAL_PRODUCTION_QUANTITY]) AS ""TOTAL PRODUCTION QUANTITY"", AVG([PROMISED_TARGET_QUANTITY]) AS ""PROMISED TARGET QUANTITY"" FROM SALES_ORDER_STATUS WHERE OTIF='FAIL' GROUP BY [SALES_ORDER_NUMBER], [LINE_ITEM_NUMBER], [SOLD_TO_PARTY], [DEMAND_GROUP], [PRODUCT_FORM], ITEM, PLANT, [PLANT_NAME], BATCH;"
+394107-sql,sql,Which plant can manufacture these product group?,"select DISTINCT loc AS Location, udc_product_group As Product_Group from plant_percentage"
+289545-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.TOTAL_DEMAND (
+    ITEM varchar,
+    TOTAL_DEMAND int,
+    Total_MET_DEMAND int
+);
+
+
+
+
+
+"
+1840460-doc,documentation,,"The following columns are in the late_order_reasons table in the GEN_AI_NEW database:
+
+|     | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME         | COLUMN_NAME           | DATA_TYPE   |
+|----:|:----------------|:---------------|:-------------------|:----------------------|:------------|
+| 147 | GEN_AI_NEW      | dbo            | late_order_reasons | Demand_Order          | varchar     |
+| 148 | GEN_AI_NEW      | dbo            | late_order_reasons | Order_Qty             | float       |
+| 149 | GEN_AI_NEW      | dbo            | late_order_reasons | Part_ID               | varchar     |
+| 150 | GEN_AI_NEW      | dbo            | late_order_reasons | Order_Due_Date        | varchar     |
+| 151 | GEN_AI_NEW      | dbo            | late_order_reasons | Days_Late             | tinyint     |
+| 152 | GEN_AI_NEW      | dbo            | late_order_reasons | Late_Reason           | varchar     |
+| 153 | GEN_AI_NEW      | dbo            | late_order_reasons | Mfg_Order             | varchar     |
+| 154 | GEN_AI_NEW      | dbo            | late_order_reasons | Operation             | varchar     |
+| 155 | GEN_AI_NEW      | dbo            | late_order_reasons | Late_Part             | varchar     |
+| 156 | GEN_AI_NEW      | dbo            | late_order_reasons | Total_Quantity        | float       |
+| 157 | GEN_AI_NEW      | dbo            | late_order_reasons | Quantity_from_Vendors | float       |
+| 158 | GEN_AI_NEW      | dbo            | late_order_reasons | Latest_Delivery       | varchar     |
+| 159 | GEN_AI_NEW      | dbo            | late_order_reasons | Latest_Time_Needed    | varchar     |
+| 160 | GEN_AI_NEW      | dbo            | late_order_reasons | Mfg_Lateness          | float       |
+| 161 | GEN_AI_NEW      | dbo            | late_order_reasons | Reason_Category       | varchar     |
+| 162 | GEN_AI_NEW      | dbo            | late_order_reasons | RES                   | varchar     |
+| 163 | GEN_AI_NEW      | dbo            | late_order_reasons | PRODUCT_FORM          | varchar     |
+| 164 | GEN_AI_NEW      | dbo            | late_order_reasons | LATE_PART_TYPE        | varchar     |
+| 165 | GEN_AI_NEW      | dbo            | late_order_reasons | ALTERNATE_PART        | varchar     |
+| 166 | GEN_AI_NEW      | dbo            | late_order_reasons | CAMPAIGN_TYPE         | varchar     |
+| 167 | GEN_AI_NEW      | dbo            | late_order_reasons | CAMPAIGN_START_DATE   | date        |
+| 168 | GEN_AI_NEW      | dbo            | late_order_reasons | CAMPAIGN_END_DATE     | date        |"
+402304-sql,sql,Which causal factors have a significant impact?,"SELECT DISTINCT [name] AS DFU, REVERSE(PARSENAME(REPLACE(REVERSE([Name]), '/', '.'), 1)) AS [Customer], REVERSE(PARSENAME(REPLACE(REVERSE([Name]), '/', '.'), 2)) AS [Product], [index] AS [Significant Causal Factors], ROUND(coef,2) AS Coefficients, ROUND(P_t,2) AS P_Value, ROUND(Importances,0) AS [Feature_Importance%] FROM [GEN_AI_NEW].[dbo].[p_val] WHERE [check] = 1 AND [index] <> 'const' AND name = 'R01/15/All_Location' ORDER BY [Feature_Importance%] DESC;"
+401643-sql,sql,Why were allocations insufficient in the supply plan?,"SELECT [DEMAND_GROUP] AS ""DEMAND GROUP"", [PLANNING_ITEM] AS ""PLANNING ITEM"", [DEMAND_LOCATION] AS ""DEMAND LOCATION"", [FORECAST_DATE] AS ""FORECAST DATE"", PLANT AS ""PLANT"", [CONSTRAINT_FORECAST] AS ""CONSTRAINT FORECAST"", SUPPLY AS ""SUPPLY"", [INV_QUANTITY_PLANT] AS ""INV QUANTITY PLANT"", [INV_AT_PLANT] AS ""INV AT PLANT"", [ALLOCATION_QUANTITY] AS ""ALLOCATION QUANTITY"", [Order] AS ""Order"" FROM UDT_ALLOCATION_DETAIL_REPORT WHERE [ALLOCATION_QUANTITY] < [Order];"
+401641-sql,sql,What is the current allocation status of these orders?,"SELECT [ALLOCATION_DEMAND_GROUP] AS ""ALLOCATION DEMAND GROUP"", [ALLOCATION_ITEM] AS ""ALLOCATION ITEM"", PLANT AS ""PLANT"", [AVAIL_DATE] AS ""AVAIL DATE"", [ALLOCATION_QUANTITY] AS ""ALLOCATION QUANTITY"", [CONSUMED_QUANTITY] AS ""CONSUMED QUANTITY"", [FREE_ALLOCATIONS] AS ""FREE ALLOCATIONS"" FROM UDT_ALLOCATION_DETAIL_REPORT WHERE [FREE_ALLOCATIONS]=0;"
+285438-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.SNOP_Value_Add_RCA (
+    Product varchar,
+    Customer varchar,
+    Month date,
+    Cust_Segment varchar,
+    Stat_Forecast float,
+    CAM_Forecast float,
+    BM_Forecast float,
+    RM_Forecast float,
+    SH_Forecast float,
+    PH_Forecast float,
+    Sales float,
+    SNOE_Forecast_Addition float,
+    Remaining_Per_Week_Qty float,
+    Avg_3_month_sales float,
+    Stat_Accuracy varchar,
+    CAM_Accuracy varchar,
+    BM_Accuracy varchar,
+    RM_Accuracy varchar,
+    SH_Accuracy varchar,
+    PH_Accuracy varchar,
+    CAM_Value_Add varchar,
+    BM_Value_Add varchar,
+    RM_Value_Add varchar,
+    SH_Value_Add varchar,
+    PH_Value_Add varchar,
+    Highest_Forecast_accuracy varchar,
+    Accuracy_Increase_Decrease varchar,
+    New_Unconstraint_Accuracy varchar,
+    Skip_Collaboration_Accuracy_Increase varchar
+);
+
+"
+287094-ddl,ddl,,"
+CREATE TABLE [GEN_AI_NEW].[dbo].[sales_order_status] (
+    SALES_ORDER_NUMBER VARCHAR(255),
+    LINE_ITEM_NUMBER VARCHAR(255),
+    CUSTOMER_NAME VARCHAR(255),
+    SOLD_TO_PARTY INT,
+    DEMAND_GROUP VARCHAR(255),
+    SHIP_TO_STATE VARCHAR(255),
+    SHIP_TO_BRANCH VARCHAR(255),
+    REGION VARCHAR(255),
+    SEGMENT VARCHAR(255),
+    PRODUCT_FORM VARCHAR(255),
+    ITEM VARCHAR(255),
+    PLANT_NAME VARCHAR(255),
+    PLANT VARCHAR(255),
+    ORDER_TYPE VARCHAR(255),
+    DELIVERY_TARGET_DATE DATE,
+    PROMISED_TARGET_QUANTITY SMALLINT,
+    ORIGINAL_ORDER_QUANTITY SMALLINT,
+    CAM VARCHAR(255),
+    BATCH VARCHAR(255),
+    PRODUCTION_TARGET_DATE DATE,
+    ACTUAL_PRODUCTION_DATE DATE,
+    DO_TARGET_DATE DATE,
+    ACTUAL_DO_CREATION_DATE DATE,
+    ACTUAL_INVOICE_CREATION_DATE DATE,
+    ACTUAL_DELIVERY_DATE DATE,
+    ACTUAL_PRODUCTION_QUANTITY SMALLINT,
+    ACTUAL_DISPATCH_QUANTITY SMALLINT,
+    ACTUAL_INVOICE_QUANTITY SMALLINT,
+    TOTAL_PRODUCTION_QUANTITY SMALLINT,
+    TOTAL_INVOICE_QUANTITY SMALLINT,
+    [KEY] VARCHAR(255),
+    OTIF VARCHAR(255)
+);
+
+
+
+"
+402273-sql,sql,Are there any alternate materials that can be used?,"SELECT DISTINCT Late_Part AS LATE_PART, LATE_PART_TYPE, ROUND(SUM(Total_Quantity), 0) AS QTY_REQUIRED, Alternate_Part AS ALTERNATE_MATERIAL FROM [GEN_AI_NEW].[dbo].[late_order_reasons] WHERE Late_Part NOT LIKE '%Null%' AND Order_Qty > '50' AND Product_Form = 'S_PPGLCF' GROUP BY Late_Part, LATE_PART_TYPE, Alternate_Part ORDER BY QTY_REQUIRED DESC;"
+400092-sql,sql,What is the forecast value added by each stakeholder?,"select distinct Customer, CONVERT ( varchar,MONTH, 32) AS Month, round(Sales,0) as Sales,CAM_Value_Add,BM_Value_Add,RM_Value_Add,SH_Value_Add,PH_Value_Add from SNOP_Value_Add_RCA where month ='01-06-2024' and cust_segment ='NA' and product='Product Family' and Customer in ('Domestic','Exports') order by 4 desc;"
+407075-sql,sql,"What are the Unrestricted Quantity, Inspection Quantity, Blocked Quantity, and In-Hand Stock Quantity by Distribution Channel?","select dc as [Distribution Channel],round(sum(uq),0) as [Unrestricted Quantity],round(sum(iq),0) as [Inspection Quantity], round(sum(bq),0) as [Blocked Quantity],round(sum(sq),0) as [In Hand Stock Quantity],round(100*round(sum(uq),0)/round(sum(sq),0),0) AS [Unutilized Inventory%] from Inv_Stock_Clear where NCO_DECLARED='Yes' and dc<>'Stock Transfer' group by dc order by [In Hand Stock Quantity] desc;"
+1840468-doc,documentation,,"The following columns are in the UPSTREAM_RESOURCES table in the GEN_AI_NEW database:
+
+|     | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME         | COLUMN_NAME      | DATA_TYPE   |
+|----:|:----------------|:---------------|:-------------------|:-----------------|:------------|
+| 315 | GEN_AI_NEW      | dbo            | UPSTREAM_RESOURCES | ITEM             | varchar     |
+| 316 | GEN_AI_NEW      | dbo            | UPSTREAM_RESOURCES | Product_Group    | varchar     |
+| 317 | GEN_AI_NEW      | dbo            | UPSTREAM_RESOURCES | SUBORD           | varchar     |
+| 318 | GEN_AI_NEW      | dbo            | UPSTREAM_RESOURCES | LOC              | varchar     |
+| 319 | GEN_AI_NEW      | dbo            | UPSTREAM_RESOURCES | PRODUCTIONMETHOD | varchar     |
+| 320 | GEN_AI_NEW      | dbo            | UPSTREAM_RESOURCES | STEPNUM          | int         |
+| 321 | GEN_AI_NEW      | dbo            | UPSTREAM_RESOURCES | RES              | varchar     |
+| 322 | GEN_AI_NEW      | dbo            | UPSTREAM_RESOURCES | STARTDATE        | date        |
+| 323 | GEN_AI_NEW      | dbo            | UPSTREAM_RESOURCES | PCTUSED          | float       |
+| 324 | GEN_AI_NEW      | dbo            | UPSTREAM_RESOURCES | EXTRA_QTY        | float       |"
+400881-sql,sql,What is the potential improvement in unconstrainted forecast accuracy?,"select distinct Product,Customer, CONVERT ( varchar,MONTH, 32) AS Month, round (Avg_3_month_sales,0) as Avg_3Month_sales, Highest_Forecast_Accuracy, Accuracy_Increase_Decrease as [Improved Accuracy] ,PH_Accuracy as Current_Unconstraint_Forecast, New_Unconstraint_Accuracy from SNOP_Value_Add_RCA where month in ('01-07-2024','01-08-2024','01-09-2024') and Product='15' and Customer in ('WEST','NORTH') order by 2 asc"
+407091-sql,sql,What is the aging of the inventory by Product Form and Grade?,"select dc as [Distribution Channel],sales_office as [Sales Office], form as [Product Form],grade_grp as Grade,round(avg(aging),0) as [Ageing In Days],round(sum(uq),0) as  [Unrestricted Qty] from inv_stock_clear where NCO_DECLARED='Yes' and dc='OEM' and sales_office='Mumbai' and form='S_HRCF' and grade_grp='API & High Strength Diversion' group by form,grade_grp,dc,sales_office having round(avg(aging),0)>=0 order by [Ageing in Days] asc;"
+289546-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.UPSTREAM_RESOURCES (
+    ITEM varchar,
+    Product_Group varchar,
+    SUBORD varchar,
+    LOC varchar,
+    PRODUCTIONMETHOD varchar,
+    STEPNUM int,
+    RES varchar,
+    STARTDATE date,
+    PCTUSED float,
+    EXTRA_QTY float
+);
+
+
+
+
+
+"
+289544-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.Resource_utilization (
+    Month date,
+    LOC varchar,
+    RES varchar,
+    Total_produced_qty float,
+    Prime_qty float,
+    Co_prod_qty float,
+    Load_hours float,
+    UDC_MONTH_CAPACITY_HRS float,
+    Pct_Used float,
+    eff_Prodrate_Full_capacity float,
+    eff_prod_rate_loaded_capacity float,
+    Eff_Yield_rate float,
+    updated_pct_used float
+);
+
+
+
+
+"
+402269-sql,sql,Review the resource parameters.,"SELECT RES, ROUND(AVG(PROD_RATE), 0) AS PROD_RATE, ROUND(MAX(PROD_RATE), 0) AS MAX_PROD_RATE, ROUND(AVG(YIELD), 2) AS YIELD, ROUND(MAX(YIELD), 2) AS MAX_YIELD, ROUND((MAX(PROD_RATE)) - (AVG(PROD_RATE)), 0) AS POSSIBLE_IMPROVED_PROD_RATE, ROUND((MAX(YIELD)) - (AVG(YIELD)), 2) AS POSSIBLE_IMPROVED_YIELD FROM dbo.[BTP_BTR_KLM] WHERE RES IN (SELECT DISTINCT RES FROM [GEN_AI_NEW].[dbo].[late_order_reasons] WHERE REASON_CATEGORY = 'Capacity Constraint' AND Late_Reason LIKE 'CAO Push:%' AND Product_Form = 'S_PPGLCF' GROUP BY RES) GROUP BY RES;"
+282147-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.UDT_ORDER_FULFILLMENT (
+    SIMULATION_NAME varchar,
+    MONTH date,
+    PRODUCT_GRP varchar,
+    Market_segment varchar,
+    Customer_segment varchar,
+    PRIORITY float,
+    TOTAL_CUST_ORDER float,
+    TOT_CUSTORDER_ALLOCATION float,
+    TOT_FORCAST_ORDER float,
+    TOT_FCSTORDER_ALLOCATION float,
+    TOTAL_ORDER float,
+    TOTAL_ALLOCATION float
+);
+
+"
+400102-sql,sql,"What has been the historical data pattern for these products and customers, and what statistical algorithms and parameters have been selected?","select Product, Customer as Region, CONVERT ( varchar,startdate, 32) as Month, round(actuals,0) as Sales,data_pattern_type as Data_Pattern_Type,trend as Trend,Seasonality_Check, BY_Algorithm, round(BY_Alpha_Parameter,2) as BY_Alpha_Parameter, round(BY_Beta_Parameter,2) as BY_Beta_Parameter, round(BY_Gamma_Parameter,2) as BY_Gamma_Parameter from Statistical_Data where startdate='01-05-2024' and Customer not in ('Domestic','Exports') order by 3 desc;"
+1840451-doc,documentation,,"The following columns are in the ABP_DATA table in the GEN_AI_NEW database:
+
+|    | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME   | COLUMN_NAME   | DATA_TYPE   |
+|---:|:----------------|:---------------|:-------------|:--------------|:------------|
+|  0 | GEN_AI_NEW      | dbo            | ABP_DATA     | ITEM          | varchar     |
+|  1 | GEN_AI_NEW      | dbo            | ABP_DATA     | Res           | varchar     |
+|  2 | GEN_AI_NEW      | dbo            | ABP_DATA     | PRODRATE      | float       |
+|  3 | GEN_AI_NEW      | dbo            | ABP_DATA     | Max_Prodrate  | float       |
+|  4 | GEN_AI_NEW      | dbo            | ABP_DATA     | Yield         | float       |
+|  5 | GEN_AI_NEW      | dbo            | ABP_DATA     | MAX_Yield     | float       |"
+402262-sql,sql,Which product forms have the most delayed orders at the Kalmeshwar plant?,"SELECT TOP 5 PRODUCTFORM, ROUND(SUM(DISTINCT BALANCE_TO_DISPATCH_QTY), 0) AS ORDER_QTY, COUNT(DISTINCT ITEM) AS ORDER_COUNT, CONCAT(ROUND(AVG(ORDER_LATENESS), 0), ' ', 'Days') AS ORDER_LATENESS FROM [GEN_AI_NEW].[dbo].[BTP_BTR_KLM] WHERE ORDER_STATUS = 'LATE' GROUP BY PRODUCTFORM, ORDER_STATUS ORDER BY ORDER_QTY DESC;"
+402302-sql,sql,What is the forecast accuracy considering the current causal factors?,"SELECT CONCAT('01','-',RIGHT([Test_Period],2),'-',LEFT([Test_Period],4)) AS [Month], [Key] AS [DFU], REVERSE(PARSENAME(REPLACE(REVERSE([Key]), '/', '.'), 1)) AS [Customer], REVERSE(PARSENAME(REPLACE(REVERSE([Key]), '/', '.'), 2)) AS [Product], ROUND(SUM(Actuals),0) AS Sales, ROUND(SUM(Pred),0) AS Forecast, ROUND(AVG([Accuracy]),0) AS [Forecast Accuracy%] FROM [GEN_AI_NEW].[dbo].[Model_Results] WHERE model='All Var MLR' AND Accuracy>60 GROUP BY [Test_Period],[Key] ORDER BY [Forecast Accuracy%] DESC,[Month] DESC;"
+402312-sql,sql,Will there be further improvement in forecast accuracy by adding new variables?,"SELECT CONCAT('01','-',RIGHT(Y.[Test_Period],2),'-',LEFT(Y.[Test_Period],4)) AS [Month], Y.DFU AS [DFU], REVERSE(PARSENAME(REPLACE(REVERSE([DFU]), '/', '.'), 1)) AS [Customer], REVERSE(PARSENAME(REPLACE(REVERSE([DFU]), '/', '.'), 2)) AS [Product], Y.All_Var_Features AS [Exhaustive Causal Factors], Y.Selected_Features AS [Significant Causal Factors], ROUND(AVG(Y.ALL_VAR_ACCURACY),0) AS [Old Forecast Accuracy%], ROUND(AVG(Y.SEL_VAR_ACCURACY),0) AS [Revised Forecast Accuracy%], ROUND(AVG(Y.DELTA_IMPROVEMENT),0) AS Delta_Improvement, CASE WHEN AVG(Y.DELTA_IMPROVEMENT) <= 0 THEN 'No Improvement' ELSE 'Improvement' END AS Improvement_Check FROM (SELECT DISTINCT A.DFU, A.Actuals, A.Test_Period, A.ALL_VAR_FEATURES, A.ALL_VAR_PRED, A.ALL_VAR_ACCURACY, CC.SELECTED_FEATURES, CC.SEL_VAR_PRED, CC.SEL_VAR_ACCURACY, (CC.SEL_VAR_ACCURACY - A.ALL_VAR_ACCURACY) AS DELTA_IMPROVEMENT FROM (SELECT DISTINCT AA.[Key] AS DFU, AA.Features AS ALL_VAR_FEATURES, AA.Test_Period, AA.Actuals, AA.Pred AS ALL_VAR_PRED, AA.Accuracy AS ALL_VAR_ACCURACY, BB.[Rank] FROM (SELECT DISTINCT [Key], Features, Test_Period, Actuals, Pred, Accuracy FROM [GEN_AI_NEW].[dbo].[Model_Results] WHERE model = 'ALL Var MLR') AA LEFT JOIN (SELECT DISTINCT [key], [rank] FROM sales_data) BB ON AA.[Key] = BB.[Key]) A LEFT JOIN (SELECT DISTINCT [Key] AS DFU, Features AS SELECTED_FEATURES, Test_Period, Pred AS SEL_VAR_PRED, Accuracy AS SEL_VAR_ACCURACY FROM [GEN_AI_NEW].[dbo].[Model_Results] WHERE model = 'SEL Var MLR') CC ON A.DFU = CC.DFU AND A.Test_Period = CC.Test_Period) AS Y WHERE [DFU] = 'R01/15/All_Location' AND [DELTA_IMPROVEMENT] > 0 GROUP BY Y.DFU, Y.ALL_VAR_FEATURES, Y.SELECTED_FEATURES, Y.Test_Period ORDER BY AVG(Y.DELTA_IMPROVEMENT) DESC, Month DESC;"
+1840465-doc,documentation,,"The following columns are in the POSSIBLE_REASONS table in the GEN_AI_NEW database:
+
+|     | TABLE_CATALOG   | TABLE_SCHEMA   | TABLE_NAME       | COLUMN_NAME        | DATA_TYPE   |
+|----:|:----------------|:---------------|:-----------------|:-------------------|:------------|
+| 297 | GEN_AI_NEW      | dbo            | POSSIBLE_REASONS | Possible Reasons   | varchar     |
+| 298 | GEN_AI_NEW      | dbo            | POSSIBLE_REASONS | Corrective Actions | varchar     |"
+285437-ddl,ddl,,"
+CREATE TABLE GEN_AI_NEW.dbo.Statistical_Data (
+    Product varchar,
+    Customer varchar,
+    Total_Percent_of_Sales_Contribution varchar,
+    Startdate date,
+    Actuals float,
+    Forecast float,
+    Accuracy varchar,
+    BY_Algorithm varchar,
+    Data_Pattern_Type varchar,
+    Trend varchar,
+    Seasonality_Check varchar,
+    BY_Alpha_Parameter float,
+    BY_Beta_Parameter float,
+    BY_Gamma_Parameter float
+);
+
+"
+400098-sql,sql,What was the forecast accuracy for the previous month?,"select  Customer,  CONVERT ( varchar,startdate, 32) as Month, round (actuals,0) as Sales,round (forecast,0) as Forecast, accuracy as Forecast_Accuracy from Statistical_Data where startdate='01-05-2024'  and product='Product Family' and customer in ('DOMESTIC','EXPORTS') order by 3 desc;"

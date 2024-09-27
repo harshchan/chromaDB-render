@@ -1,6 +1,6 @@
 from vanna.openai import OpenAI_Chat
 from vanna.chromadb import ChromaDB_VectorStore
-from vanna.groq import Groq
+from vanna.groqq import Groq
 
 class MyVanna(ChromaDB_VectorStore, Groq):
     def __init__(self, config=None):
